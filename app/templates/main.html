@@ -1,5 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<iframe class="h-screen w-screen" src="{% url 'search' %}" frameborder="0"></iframe>
+<div class="h-screen container flex flex-col items-center justify-center">
+    <p class="font-bold text-3xl text-center">MC Browser</p>
+    <form action="{% url 'save-search' %}" method="post" class="mt-4">
+        {% csrf_token %}
+        <input
+            class="shadow-xl mx-auto text-white bg-red-500 rounded-full border-none outline-none px-4 py-2"
+            type="text"
+            name="q"
+            placeholder="Search on Google"
+            autocomplete="true"
+            required
+        />
+    </form>
+</div>
 {% endblock %}

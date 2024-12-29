@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="h-screen w-screen px-5">
+    {% if not histories %}
+    <p class="text-center text-3xl text-yellow-500 font-bold justify-center items-center">Нету поисков :(</p>
+    {% else %}
+    {% for history in histories %}
+    <div class="flex bg-white h-[10%] w-full items-center px-5 m-1 rounded-sm hover:shadow-md mt-5">
+        <img width="40" height="40" src="https://cdn-icons-png.flaticon.com/128/2504/2504914.png" alt="google icon">
+        <p class="ml-5">{{ history.query }}</p>
+        <p class="ml-auto mr-5">{{ history.created_at }}</p>
+        <img width="30" height="30" src="https://cdn-icons-png.flaticon.com/128/6861/6861362.png" alt="delete icon">
+
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

@@ -10,12 +10,14 @@
 </head>
 <body>
 <header class="mx-auto bg-red-200 py-5 px-2 space-x-5">
-    <a href="">Главная</a>
-    <a href="">История</a>
+    <a href="{% url 'main' %}">Главная</a>
+    <a href="{% url 'history' %}">История</a>
 </header>
-  {% block content %}
+<section class="bg-gray-100">
+    {% block content %}
     {% load static %}
-  {% endblock %}
+    {% endblock %}
+</section>
 <footer class="mx-auto bg-red-200 py-5 px2">
     <div class="flex justify-around ml-5">
         <div>
