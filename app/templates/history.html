@@ -1,18 +1,75 @@
+<!-- history.html -->
 {% extends 'base.html' %}
 {% block content %}
-<div class="h-screen w-screen px-5">
-    {% if not histories %}
-    <p class="text-center text-3xl text-yellow-500 font-bold justify-center items-center">Нету поисков :(</p>
-    {% else %}
-    {% for history in histories %}
-    <div class="flex bg-white h-[10%] w-full items-center px-5 m-1 rounded-sm hover:shadow-md mt-5">
-        <img width="40" height="40" src="https://cdn-icons-png.flaticon.com/128/2504/2504914.png" alt="google icon">
-        <p class="ml-5">{{ history.query }}</p>
-        <p class="ml-auto mr-5">{{ history.created_at }}</p>
-        <img width="30" height="30" src="https://cdn-icons-png.flaticon.com/128/6861/6861362.png" alt="delete icon">
+<div class="h-screen container flex flex-col items-center justify-center">
+    <p class="font-bold text-3xl text-center">Search History</p>
 
+    <!-- Секция с закладками -->
+    <div class="mt-4 w-full">
+        <p class="font-semibold text-xl">Bookmarks</p>
+        <ul class="mt-2">
+            {% for history in bookmarks %}
+                <li class="flex justify-between items-center mb-4 p-4 bg-yellow-100 rounded-lg">
+                    <span>{{ history.query }}</span>
+                    <div class="flex space-x-2">
+                        <a href="https://www.google.com/search?q={{ history.query }}" class="bg-blue-500 text-white px-4 py-2 rounded-full">Go to Google</a>
+                        <form action="{% url 'toggle-bookmark' history.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-full">
+                                Remove Bookmark
+                            </button>
+                        </form>
+                        <form action="{% url 'delete-search' history.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-gray-500 text-white px-4 py-2 rounded-full">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% empty %}
+                <p>No bookmarks yet.</p>
+            {% endfor %}
+        </ul>
     </div>
-    {% endfor %}
-    {% endif %}
+
+    <!-- Секция с обычными запросами -->
+    <div class="mt-4 w-full">
+        <p class="font-semibold text-xl">Other Searches</p>
+        <ul class="mt-2">
+            {% for history in histories %}
+                <li class="flex justify-between items-center mb-4 p-4 bg-gray-100 rounded-lg">
+                    <span>{{ history.query }}</span>
+                    <div class="flex space-x-2">
+                        <a href="https://www.google.com/search?q={{ history.query }}" class="bg-blue-500 text-white px-4 py-2 rounded-full">Go to Google</a>
+                        <form action="{% url 'toggle-bookmark' history.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded-full">
+                                Add Bookmark
+                            </button>
+                        </form>
+                        <form action="{% url 'delete-search' history.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-gray-500 text-white px-4 py-2 rounded-full">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% empty %}
+                <p>No search history yet.</p>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Кнопка для очистки всей истории -->
+    <div class="mt-6">
+        <form action="{% url 'clear-history' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-full">
+                Clear History
+            </button>
+        </form>
+    </div>
 </div>
 {% endblock %}
